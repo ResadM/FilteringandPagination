@@ -81,8 +81,14 @@ namespace FilteringandPagination.Controllers
             var count=query.Count();
             var filteredData = query.CustomPagination(searchParam.PageNumber,searchParam.PageSize).ToList();
 
+            var pagedList = new PagedList<Users>(filteredData, count, searchParam.PageNumber, searchParam.PageSize);
 
-            return filteredData;
+            if (pagedList != null)
+            {
+                Response.AddPaginationHeader(pagedList.MetaData);
+            }
+
+            return pagedList;
         }
     }
 }
